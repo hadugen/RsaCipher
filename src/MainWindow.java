@@ -4,35 +4,38 @@ import java.awt.event.*;
 
 public class MainWindow extends JFrame{
 
-    private JButton roflanDovolenButton;
-    private JButton roflanEbaloButton;
     private JPanel panel1;
+    private JTextArea textArea_text;
+    private JButton encryptButton;
+    private JTextArea textArea_encryptedText;
+    private JTextArea textArea_encryptedText2;
+    private JTextArea textArea_text2;
+    private JButton decryptButton;
+
+    RsaEncrypter rsaEncrypter = new RsaEncrypter();
 
     public MainWindow() {
         setContentPane(panel1);
-        setSize(300, 300);
-
+        setSize(900, 600);
+        setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        roflanDovolenButton.addActionListener(new ActionListener() {
+        encryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                m_dialog dial = new m_dialog();
-                dial.setRoflanText("roflanDovolen");
-                dial.setModal(true);
-                dial.setVisible(true);
-
+                textArea_encryptedText.setText(
+                        rsaEncrypter.encrypt(textArea_text.getText()
+                        ));
             }
         });
 
-        roflanEbaloButton.addActionListener(new ActionListener() {
+        decryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                m_dialog dial = new m_dialog();
-                dial.setRoflanText("roflanEbalo");
-                dial.setModal(true);
-                dial.setVisible(true);
+                textArea_text2.setText(
+                        rsaEncrypter.decrypt(textArea_encryptedText2.getText()
+                        ));
             }
         });
     }
