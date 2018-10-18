@@ -12,7 +12,7 @@ public class MainWindow extends JFrame{
     private JTextArea textArea_text2;
     private JButton decryptButton;
 
-    RsaEncrypter rsaEncrypter = new RsaEncrypter();
+    RsaEncrypter rsaEncrypter = RsaEncrypter.getInstance();
 
     public MainWindow() {
         setContentPane(panel1);

@@ -7,7 +7,9 @@ public class RsaEncrypter {
     private BigInteger [] _privateKeyPair = new BigInteger[2];
     private BigInteger [] _publicKeyPair = new BigInteger[2];
 
-    public RsaEncrypter() {
+    static private RsaEncrypter _instance = null;
+
+    private RsaEncrypter() {
         BigInteger      p = BigInteger.valueOf(7951),
                 q = BigInteger.valueOf(8707),
                 e = BigInteger.valueOf(4099),
@@ -36,6 +38,13 @@ public class RsaEncrypter {
         _privateKeyPair[0] = funcEyeler.add(BigInteger.valueOf(574099));
         _privateKeyPair[1] = n;
 
+    }
+
+    static public RsaEncrypter getInstance() {
+        if(_instance == null) {
+            _instance = new RsaEncrypter();
+        }
+        return _instance;
     }
 
     public String encrypt(String text) {
