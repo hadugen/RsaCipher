@@ -24,9 +24,9 @@ public class MainWindow extends JFrame{
         encryptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                textArea_encryptedText.setText(
-                        rsaEncrypter.encrypt(textArea_text.getText()
-                        ));
+                String encryptedText = rsaEncrypter.encrypt(textArea_text.getText());
+                textArea_encryptedText.setText(encryptedText);
+                textArea_encryptedText2.setText(encryptedText);
             }
         });
 
@@ -42,7 +42,6 @@ public class MainWindow extends JFrame{
 
     public static void main(String[] args) {
         new MainWindow();
-
     }
 
 }
