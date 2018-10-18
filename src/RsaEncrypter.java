@@ -9,33 +9,44 @@ public class RsaEncrypter {
 
     static private RsaEncrypter _instance = null;
 
+    private BigInteger
+            _x = BigInteger.ZERO,
+            _y = BigInteger.ZERO;       // holders for euclidAlgorithm
+
     private RsaEncrypter() {
         BigInteger      p = BigInteger.valueOf(7951),
-                q = BigInteger.valueOf(8707),
-                e = BigInteger.valueOf(4099),
-                n = p.multiply(q);
+                        q = BigInteger.valueOf(8707),
+                        e = BigInteger.valueOf(4099),
+                        n = p.multiply(q);
 
-        BigInteger funcEyeler = p.subtract(BigInteger.valueOf(1))
+        BigInteger funcEyeler = p
+                .subtract(BigInteger.valueOf(1))
                 .multiply(q.subtract(BigInteger.valueOf(1)));
 
         definePairs(funcEyeler, e, n);
     }
 
-    private BigInteger euqlidAlgorithm(BigInteger funcEyeler, BigInteger e, BigInteger x, BigInteger y) {
-        //TODO
-        return BigInteger.ZERO;
+    private BigInteger euclidAlgorithm(BigInteger funcEyeler, BigInteger e) {
+
+        if(funcEyeler == BigInteger.ZERO) {
+            _x = BigInteger.ZERO;
+            _y = BigInteger.ONE;
+            return e;
+        }
+        BigInteger d = euclidAlgorithm(e.mod(funcEyeler), funcEyeler);
+        BigInteger tx = _x;
+        _x = _y.subtract(e.divide(funcEyeler).multiply(_x));
+        _y = tx;
+        return d;
     }
 
 
     private void definePairs(BigInteger funcEyeler, BigInteger e, BigInteger n) {
-        BigInteger x = BigInteger.ZERO;
-        BigInteger y = BigInteger.ZERO;
-
-
         _publicKeyPair[0] = e;
         _publicKeyPair[1] = n;
 
-        _privateKeyPair[0] = funcEyeler.add(BigInteger.valueOf(574099));
+        euclidAlgorithm(funcEyeler, e);
+        _privateKeyPair[0] = funcEyeler.add(_y);
         _privateKeyPair[1] = n;
 
     }
@@ -53,7 +64,7 @@ public class RsaEncrypter {
         for(char c : text.toCharArray()) {
             encrypted = BigInteger.valueOf(c);
             encrypted = encrypted.modPow(_publicKeyPair[0], _publicKeyPair[1]);
-            buffer.append(encrypted.toString() + " ");
+            buffer.append(encrypted.toString().concat(" "));
         }
         return buffer.toString();
     }
